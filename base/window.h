@@ -18,6 +18,13 @@ public:
         return t;
     }
 
+    static CSize GetClientSize(HWND wnd)
+    {
+        CRect   t;
+        ::GetClientRect(wnd, t);
+        return t.Size();
+    }
+
     static int GetScrollbarWidth() { return GetSystemMetrics(SM_CXVSCROLL); }
 
 #ifdef _AFX

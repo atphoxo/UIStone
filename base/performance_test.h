@@ -4,24 +4,10 @@
 class PerformanceTest
 {
 private:
-    struct AverageCount
-    {
-        double   total = 0;
-        double   count = 0;
-
-        int Update(int curr)
-        {
-            total += curr;
-            count++;
-            return (int)(total / count);
-        }
-    };
-
-private:
     using stlclock = std::chrono::steady_clock;
 
     stlclock::time_point   m_start;
-    std::unique_ptr<AverageCount>   m_average;
+    std::optional<int>   m_count;
 
 public:
     PerformanceTest()
@@ -29,9 +15,9 @@ public:
         Restart();
     }
 
-    void SetAverageMode()
+    void EnableAverageMode()
     {
-        m_average = std::make_unique<AverageCount>();
+        m_count = 0;
     }
 
     void Restart()
@@ -48,9 +34,10 @@ public:
     void DebugOut(PCWSTR prefix_txt = L"oxo -- ")
     {
         int   curr = GetElapseTime();
-        if (m_average)
+        if (m_count)
         {
-            curr = m_average->Update(curr);
+            (*m_count)++;
+            curr = curr / *m_count;
         }
 
         CString   s;

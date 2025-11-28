@@ -18,13 +18,13 @@ public:
     static void FindAllLanguage(std::map<CString, CString>& language_list)
     {
         WIN32_FIND_DATA   fd = {};
-        HANDLE   h = ::FindFirstFile(LanguageFolder() + L"*.ini", &fd);
+        HANDLE   h = ::FindFirstFile(BaseFolder() + L"*.ini", &fd);
         if (h != INVALID_HANDLE_VALUE)
         {
             do
             {
                 CString   name;
-                FCFile::INIRead(LanguageFolder() + fd.cFileName, L"LANGUAGE", name);
+                FCFile::INIRead(BaseFolder() + fd.cFileName, L"LANGUAGE", name);
                 if (!name.IsEmpty())
                 {
                     language_list[fd.cFileName] = name;
@@ -41,7 +41,7 @@ public:
 
     static void SetCurrentLanguageID(PCWSTR filename)
     {
-        if (StrStrI(filename, L".ini") && PathFileExists(LanguageFolder() + filename))
+        if (StrStrI(filename, L".ini") && PathFileExists(BaseFolder() + filename))
         {
             wcscpy_s(CURRENT_NAME(), MAX_LANGUAGE_NAME, filename);
         }
@@ -75,10 +75,16 @@ public:
         return L"en.ini";
     }
 
+    static CString& BaseFolder()
+    {
+        static CString   dir;
+        return dir;
+    }
+
 private:
     static auto& GetIniReader()
     {
-        static internal::LanguageIniReader   s(LanguageFolder() + CURRENT_NAME());
+        static internal::LanguageIniReader   s(BaseFolder() + CURRENT_NAME());
         return s;
     }
 
@@ -88,11 +94,5 @@ private:
     {
         static WCHAR   buf[MAX_LANGUAGE_NAME] = L"en.ini";
         return buf;
-    }
-
-    static CString& LanguageFolder()
-    {
-        static CString   dir = FCFile::GetModuleFolder((HMODULE)&__ImageBase) + L"language\\";
-        return dir;
     }
 };

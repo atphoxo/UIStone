@@ -18,6 +18,11 @@ public:
         m_text_list = FCString::SplitTextByToken(txt, L"|");
     }
 
+    size_t size() const
+    {
+        return m_text_list.size();
+    }
+
     CString operator[](int index) const
     {
         try

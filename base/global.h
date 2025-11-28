@@ -35,3 +35,4 @@ public:
 #include "sequence_3state_builder.h"
 #include "gdi_bitmap.h"
 #include "window.h"
+#include "icon.h"

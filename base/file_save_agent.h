@@ -7,7 +7,9 @@ private:
     const CString   m_temp_file;
 
 public:
-    FileSaveAgent(PCWSTR dest_path) : m_dest_path(dest_path), m_temp_file(BuildTempName(dest_path))
+    FileSaveAgent(PCWSTR dest_path)
+        : m_dest_path{ dest_path }
+        , m_temp_file{ BuildTempName(dest_path) }
     {
     }
 
@@ -21,13 +23,18 @@ public:
         return m_temp_file;
     }
 
-    bool CommitReplace() const
+    bool CommitReplace(CString* error_text = nullptr) const
     {
         if (PathFileExists(m_temp_file))
         {
             SetFileAttributes(m_dest_path, FILE_ATTRIBUTE_NORMAL);
             if (CopyFile(m_temp_file, m_dest_path, FALSE))
                 return true;
+
+            if (error_text)
+            {
+                *error_text = FCHelper::GetLastWin32ErrorMessage();
+            }
         }
         assert(false);
         return false;

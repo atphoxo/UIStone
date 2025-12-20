@@ -44,7 +44,7 @@ protected:
 private:
     static inline std::map<UINT_PTR, ITimerNotify*>   g_timer_list;
 
-    static VOID CALLBACK uistone_TimerProc(HWND hwnd, UINT uMsg, UINT_PTR idEvent, DWORD dwTime)
+    static VOID CALLBACK uistone_TimerProc(HWND, UINT, UINT_PTR idEvent, DWORD)
     {
         // assert(g_timer_list.contains(idEvent)); // 碰到过KillTimer后又进来的，可能是messages already posted to the message queue.
 

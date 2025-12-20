@@ -25,7 +25,7 @@ public:
         if (auto src = loader.Load(WICNormal32bpp))
         {
             out.Create(src.Width() * 3, src.Height());
-            ImageHandler::Cover(out, src, CPoint(0, 0)); // normal
+            ImageHandler::Cover(out, src, { 0,0 }); // normal
             auto   hover = src;
             CoverState(out, hover, new BrightnessContrast(25, 3), 1); // hover
             CoverState(out, src, new BrightnessContrast(-20, -3), 2); // pressed，Note: 直接修改src，反正之后不用了

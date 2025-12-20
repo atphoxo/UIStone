@@ -31,7 +31,7 @@ public:
         return (int)std::chrono::duration_cast<std::chrono::milliseconds>(elapsed).count();
     }
 
-    void DebugOut(PCWSTR prefix_txt = L"oxo -- ")
+    void DebugOut(PCWSTR prefix_txt = L"phoxo - ")
     {
         int   curr = GetElapseTime();
         if (m_count)

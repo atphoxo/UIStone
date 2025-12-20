@@ -30,7 +30,7 @@ public:
     void SetRectOnCanvas(const CRect& rect_on_canvas) { m_rect_on_canvas = rect_on_canvas; }
     auto& GetRectOnCanvas() const { return m_rect_on_canvas; }
     // the top left point is (0,0)
-    CRect GetItemClientRect() const { return CRect(CPoint(), m_rect_on_canvas.Size()); }
+    CRect GetItemClientRect() const { return CRect({}, m_rect_on_canvas.Size()); }
     void ModifyStyle(int remove, int add) { m_style = ((m_style & ~remove) | add); }
     int GetStyle() const { return m_style; }
 

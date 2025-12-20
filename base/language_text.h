@@ -75,9 +75,12 @@ public:
         return L"en.ini";
     }
 
-    static CString& BaseFolder()
+    static const CString& BaseFolder()
     {
-        static CString   dir;
+#ifndef PHOXO_LANGUAGE_BASE_FOLDER
+#define PHOXO_LANGUAGE_BASE_FOLDER LR"(languages\)"
+#endif
+        static CString   dir = FCFile::GetModuleFolder() + PHOXO_LANGUAGE_BASE_FOLDER;
         return dir;
     }
 

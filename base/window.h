@@ -61,7 +61,7 @@ public:
         MoveRectInside(rc, work_rect.BottomRight());
     }
 
-    static void MoveRectInside(CRect& rc, const CSize& limit)
+    static void MoveRectInside(CRect& rc, CSize limit)
     {
         int   dx = OffsetInRange(rc.left, rc.right, limit.cx);
         int   dy = OffsetInRange(rc.top, rc.bottom, limit.cy);

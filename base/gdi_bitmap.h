@@ -35,9 +35,9 @@ public:
         BitmapHDC   dest_dc(m_bmp);
         if (fill_background)
         {
-            ::FillRect(dest_dc, CRect(CPoint(), src.Size()), fill_background);
+            ::FillRect(dest_dc, CRect({}, src.Size()), fill_background);
         }
-        ImageDrawer::Draw(dest_dc, CPoint(0, 0), src);
+        ImageDrawer::Draw(dest_dc, { 0,0 }, src);
     }
 
     void Delete()

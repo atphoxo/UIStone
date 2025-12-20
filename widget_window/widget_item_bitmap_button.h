@@ -17,9 +17,9 @@ public:
 protected:
     void OnDrawWidget(CDC& dc) override
     {
-        CRect   src(CPoint(), GetSliceSize());
+        CRect   src({}, GetSliceSize());
         src.OffsetRect(QueryImageIndex() * src.Width(), 0);
-        CRect   dest(CPoint(), src.Size());
+        CRect   dest({}, src.Size());
         phoxo::ImageDrawer::Draw(dc, dest, m_img, src);
     }
 

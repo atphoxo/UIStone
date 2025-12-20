@@ -41,8 +41,8 @@ public:
         {
             CalcInput(raw_size);
 
-            CRect   oldrect(CPoint(), m_src_item);
-            CRect   newrect(CPoint(), m_dest_each);
+            CRect   oldrect({}, m_src_item);
+            CRect   newrect({}, m_dest_each);
             for (int y = 0; y < m_row; y++)
             {
                 for (int i = 0; i < m_count; i++)

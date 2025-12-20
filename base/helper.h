@@ -19,19 +19,19 @@ public:
         return *obj;
     }
 
-    static bool IsExplorerInLightTheme()
+    static bool IsWindowsInLightMode()
     {
         DWORD   var = 1, len = sizeof(DWORD); // default: light mode
         RegGetValue(HKEY_CURRENT_USER, LR"(Software\Microsoft\Windows\CurrentVersion\Themes\Personalize)", L"AppsUseLightTheme", RRF_RT_REG_DWORD, NULL, &var, &len);
         return var != 0;
     }
 
-    static CString GetLastWin32ErrorMessage()
+    static CString GetWin32ErrorMessage(DWORD error_id = ::GetLastError())
     {
         PWSTR   buffer = nullptr;
         ::FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS
             , NULL
-            , ::GetLastError()
+            , error_id
             , 0
             , (PWSTR)&buffer
             , 0

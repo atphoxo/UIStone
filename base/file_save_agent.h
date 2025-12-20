@@ -33,7 +33,7 @@ public:
 
             if (error_text)
             {
-                *error_text = FCHelper::GetLastWin32ErrorMessage();
+                *error_text = FCHelper::GetWin32ErrorMessage();
             }
         }
         assert(false);

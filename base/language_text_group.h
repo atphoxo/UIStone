@@ -6,16 +6,14 @@ private:
     std::deque<CString>   m_text_list;
 
 public:
-    /// key == "t" means total, read all text, then split
-    LanguageTextGroup(PCWSTR section, PCWSTR key = L"t")
+    LanguageTextGroup(PCWSTR section, PCWSTR key)
     {
         CString   txt = LanguageText::Get(section, key);
         m_text_list = FCString::SplitTextByToken(txt, L"|");
     }
 
-    LanguageTextGroup(const CString& txt)
+    LanguageTextGroup(PCWSTR section, int key) : LanguageTextGroup(section, FCString::From(key))
     {
-        m_text_list = FCString::SplitTextByToken(txt, L"|");
     }
 
     size_t size() const

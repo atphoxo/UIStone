@@ -19,8 +19,7 @@ public:
     bool   m_is_valid = true;
 
 public:
-    CAsyncTask() {}
-
+    CAsyncTask() = default;
     virtual ~CAsyncTask()
     {
         assert(!m_work);

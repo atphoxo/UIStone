@@ -32,12 +32,11 @@ public:
 
     static CString GetAppDataFolder(PCWSTR sub_folder_name)
     {
-        CPath   dir;
-        SHGetFolderPath(NULL, CSIDL_APPDATA, NULL, SHGFP_TYPE_CURRENT, dir.m_strPath.GetBuffer(MAX_PATH));
-        dir.m_strPath.ReleaseBuffer();
-        dir.Append(sub_folder_name);
-        dir.AddBackslash();
-        return dir;
+        WCHAR   buf[MAX_PATH]{};
+        SHGetFolderPath(NULL, CSIDL_APPDATA, NULL, SHGFP_TYPE_CURRENT, buf);
+        PathAppend(buf, sub_folder_name);
+        PathAddBackslash(buf);
+        return buf;
     }
 
     static void RemoveReadOnlyAttribute(PCWSTR filepath)

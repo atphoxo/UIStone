@@ -36,3 +36,4 @@ public:
 #include "gdi_bitmap.h"
 #include "window.h"
 #include "icon.h"
+#include "dll_loader.h"

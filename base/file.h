@@ -62,17 +62,6 @@ public:
         return 0;
     }
 
-    /// Get file's extension name, not including leading period.
-    static CString GetExtName(PCWSTR filepath)
-    {
-        CString   s(PathFindExtension(filepath));
-        if (!s.IsEmpty())
-        {
-            s.Delete(0, 1);
-        }
-        return s;
-    }
-
     /// Read file to memory.
     static void Read(PCWSTR filepath, std::vector<BYTE>& out)
     {

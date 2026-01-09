@@ -12,7 +12,7 @@ private:
     }
 
 public:
-    static const int& g_current_dpi()
+    static int& g_current_dpi()
     {
         static int   s = AcquireDpi();
         return s;

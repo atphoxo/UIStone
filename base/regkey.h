@@ -20,6 +20,15 @@ public:
         return out;
     }
 
+    // Load int from registry; n unchanged if not found
+    void LoadInt(PCWSTR name, int& n)
+    {
+        if (DWORD tmp = 0; QueryDWORDValue(name, tmp) == ERROR_SUCCESS)
+        {
+            n = (int)tmp;
+        }
+    }
+
     std::vector<int> LoadVector(PCWSTR name)
     {
         std::vector<int>   vec;

@@ -21,6 +21,19 @@ public:
         return m_text_list.size();
     }
 
+    CString PopFront()
+    {
+        if (m_text_list.empty())
+        {
+            assert(false);
+            return L"";
+        }
+
+        CString   txt = m_text_list.front();
+        m_text_list.pop_front();
+        return txt;
+    }
+
     CString operator[](int index) const
     {
         try

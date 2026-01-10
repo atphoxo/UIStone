@@ -34,13 +34,13 @@ public:
         return bmp;
     }
 
-    /// original_size is the size defined inside the SVG file
-    phoxo::Image LoadSvgWithDpi(SIZE original_size, std::optional<phoxo::Color> fill_color = std::nullopt) const
+    phoxo::Image LoadSvgWithDpi(std::optional<phoxo::Color> fill_color = std::nullopt) const
     {
         using namespace phoxo;
 
+        CSize   original = SVGSizeFastHack();
         float   scale = DPICalculator::GetDPIScaleFactor();
-        CSize   target_size(std::lround(original_size.cx * scale), std::lround(original_size.cy * scale));
+        CSize   target_size(std::lround(original.cx * scale), std::lround(original.cy * scale));
         auto   wicbmp = LoadSVG(target_size, scale);
         Image   bmp = ImageHandler::Make(wicbmp, WICPremultiplied32bpp);
         if (fill_color)
@@ -48,5 +48,28 @@ public:
             ImageFastPixel::FillRGBAndPremultiply(bmp, *fill_color);
         }
         return bmp;
+    }
+
+private:
+    static int ParseIntAttr(const CStringA& xml, PCSTR search)
+    {
+        if (PCSTR ptr = StrStrIA(xml, search))
+        {
+            auto   begin = ptr + strlen(search);
+            char*   end{};
+            if (int v = strtol(begin, &end, 10))
+                return v;
+        }
+        assert(false && "SVG resource is invalid");
+        return 0;
+    }
+
+    SIZE SVGSizeFastHack() const
+    {
+        // Create a null-terminated CStringA from the resource memory
+        CStringA   xml((const char*)m_ptr, m_size);
+        int   x = ParseIntAttr(xml, R"(width=")");
+        int   y = ParseIntAttr(xml, R"(height=")");
+        return { x,y };
     }
 };

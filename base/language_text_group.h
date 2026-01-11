@@ -6,13 +6,15 @@ private:
     std::deque<CString>   m_text_list;
 
 public:
-    LanguageTextGroup(PCWSTR section, PCWSTR key)
+    explicit LanguageTextGroup(const CString& str) : m_text_list{ FCString::SplitTextByToken(str, L"|") }
     {
-        CString   txt = LanguageText::Get(section, key);
-        m_text_list = FCString::SplitTextByToken(txt, L"|");
     }
 
-    LanguageTextGroup(PCWSTR section, int key) : LanguageTextGroup(section, FCString::From(key))
+    LanguageTextGroup(PCWSTR section, PCWSTR key) : LanguageTextGroup{ LanguageText::Get(section, key) }
+    {
+    }
+
+    LanguageTextGroup(PCWSTR section, int key) : LanguageTextGroup{ LanguageText::Get(section, key) }
     {
     }
 

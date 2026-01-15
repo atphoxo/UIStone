@@ -17,12 +17,12 @@ public:
 
 //-----------------------------------------------------------------------------
 // - 因为有static inline变量，检查Fire调用时机
-// - 禁止全局/静态类继承，防止dead reference
 //-----------------------------------------------------------------------------
 class IEventObserverBase
 {
 private:
     static inline std::vector<IEventObserverBase*>   g_list;
+    bool   m_observer_registered = true;
 
 public:
     IEventObserverBase()
@@ -32,11 +32,21 @@ public:
 
     virtual ~IEventObserverBase()
     {
-        std::erase(g_list, this);
+        UnregisterObserver();
     }
 
-    // 支持 enum class 的模板版本
-    template<class E1, class E2 = int>
+    // Unregister the observer; call manually for global/static objects to avoid dead references
+    void UnregisterObserver()
+    {
+        if (m_observer_registered)
+        {
+            std::erase(g_list, this);
+            m_observer_registered = false;
+        }
+    }
+
+    // Fire an event using enum class or integer type
+    template<typename E1, typename E2 = int>
     static void FireEvent(E1 event_type, E2 event_param = 0)
     {
         ObservedEvent   t((int)event_type);

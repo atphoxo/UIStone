@@ -1,7 +1,7 @@
 #pragma once
 
 #ifdef _AFX
-class FCRegKey : public CRegKey
+class FCRegKey : public ATL::CRegKey
 {
 public:
     static CString GetString(HKEY root, PCWSTR key, PCWSTR value)

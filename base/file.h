@@ -9,10 +9,9 @@ class FCFile
 public:
     static CString GetModulePath(HMODULE mod = nullptr)
     {
-        CPath   t;
-        ::GetModuleFileName(mod, t.m_strPath.GetBuffer(MAX_PATH), MAX_PATH);
-        t.m_strPath.ReleaseBuffer();
-        return t;
+        WCHAR   buf[MAX_PATH]{};
+        ::GetModuleFileName(mod, buf, MAX_PATH);
+        return buf;
     }
 
     /// Get folder that module locate, with backslash('\') append \n
@@ -24,7 +23,7 @@ public:
     /// Get folder that file locate, with backslash('\') append.
     static CString GetFileFolder(PCWSTR filepath)
     {
-        CPath   t(filepath);
+        ATL::CPath   t(filepath);
         t.RemoveFileSpec();
         t.AddBackslash();
         return t;
@@ -96,11 +95,10 @@ public:
 
     static CString GetTempFolder()
     {
-        CPath   t;
-        ::GetTempPath(MAX_PATH, t.m_strPath.GetBuffer(MAX_PATH));
-        t.m_strPath.ReleaseBuffer();
-        t.AddBackslash();
-        return t.m_strPath;
+        WCHAR   buf[MAX_PATH]{};
+        ::GetTempPath(MAX_PATH, buf);
+        PathAddBackslash(buf);
+        return buf;
     }
 
     /// ext: such as ".jpg"

@@ -1,5 +1,15 @@
 #pragma once
 
+template <typename T>
+struct FCSingleton
+{
+    static T& GetInstance()
+    {
+        static T v;
+        return v;
+    }
+};
+
 class FCHelper
 {
 public:

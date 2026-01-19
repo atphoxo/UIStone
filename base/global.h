@@ -1,5 +1,4 @@
 #pragma once
-#include <stdexcept>
 #include <ranges>
 
 extern "C" IMAGE_DOS_HEADER __ImageBase;

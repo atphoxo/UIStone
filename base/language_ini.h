@@ -2,8 +2,6 @@
 
 _PHOXO_INTERNAL_BEGIN
 
-using CStringRef = const CString&;
-
 enum class IniLineType
 {
     Section,
@@ -66,7 +64,7 @@ public:
     }
 
 private:
-    const IniSection& GetSection(CStringRef name)
+    const IniSection& GetSection(const CString& name)
     {
         if (auto it = m_sections.find(name); it != m_sections.end())
             return it->second;
@@ -76,7 +74,7 @@ private:
         return sec;
     }
 
-    void ParseSection(CStringRef name, IniSection& section) const
+    void ParseSection(const CString& name, IniSection& section) const
     {
         auto   curr = FindSection(name);
         while (!curr.empty())
@@ -87,7 +85,7 @@ private:
         }
     }
 
-    std::wstring_view FindSection(CStringRef name) const
+    std::wstring_view FindSection(const CString& name) const
     {
         if (auto ptr = StrStrI((PCWSTR)m_buf.data(), '[' + name + ']'))
         {

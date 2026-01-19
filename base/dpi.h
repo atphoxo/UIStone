@@ -33,13 +33,4 @@ public:
 
         return v * g_current_dpi() / v_designed_for_dpi;
     }
-
-    static int Cast(HWND wnd, int v, int v_designed_for_dpi = USER_DEFAULT_SCREEN_DPI)
-    {
-        if (UINT dpi = GetDpiForWindow(wnd))
-        {
-            return v * dpi / v_designed_for_dpi;
-        }
-        return v;
-    }
 };

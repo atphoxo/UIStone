@@ -8,7 +8,7 @@ class ObservedEvent
 {
 public:
     const int   m_type;
-    int   m_param = 0;
+    WPARAM   m_param = 0;
 
 public:
     ObservedEvent(int event_type) : m_type(event_type) {}
@@ -46,11 +46,11 @@ public:
     }
 
     // Fire an event using enum class or integer type
-    template<typename E1, typename E2 = int>
+    template<typename E1, typename E2 = WPARAM>
     static void FireEvent(E1 event_type, E2 event_param = 0)
     {
         ObservedEvent   t((int)event_type);
-        t.m_param = (int)event_param;
+        t.m_param = (WPARAM)event_param;
         BroadcastEvent(t);
     }
 

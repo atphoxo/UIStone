@@ -29,6 +29,7 @@ public:
 #include "track_mouse_hover.h"
 #include "language_text.h"
 #include "language_text_group.h"
+#include "language_text_splitter.h"
 #include "font.h"
 #include "event_observer.h"
 #include "sequence_3state_builder.h"

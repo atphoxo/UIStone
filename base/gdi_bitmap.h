@@ -1,6 +1,6 @@
 #pragma once
 
-// DIB or DDB, 如果是32位色，必须Premultiplied alpha
+// DIB/DDB; 32-bit must be premultiplied alpha
 class GDIBitmap
 {
 private:

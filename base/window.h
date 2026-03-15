@@ -55,7 +55,7 @@ public:
     {
         CRect   work_rect;
         ::SystemParametersInfo(SPI_GETWORKAREA, sizeof(RECT), work_rect, 0);
-        CRect   tmp(rc.TopLeft(), work_rect.Size()); // rc大小限制在屏幕范围内
+        CRect   tmp(rc.TopLeft(), work_rect.Size()); // Ensure rc stays within screen bounds
         rc.IntersectRect(CRect(rc), tmp);
 
         MoveRectInside(rc, work_rect.BottomRight());

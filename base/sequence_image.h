@@ -5,7 +5,7 @@ class SequenceImage
 {
 private:
     IWICBitmapPtr   m_original;
-    int   m_count = 0; // 横向排列，如果为零表示每个大小一样的正方形
+    int   m_count = 0; // Horizontal image count; zero means square images
     int   m_row = 1;
     CSize   m_src_item;
     CSize   m_dest_each;
@@ -66,7 +66,7 @@ private:
         }
         else
         {
-            m_src_item.cx = m_src_item.cy; // 图片是正方形
+            m_src_item.cx = m_src_item.cy; // Assume image is square
             m_count = original_size.cx / m_src_item.cx; assert(original_size.cx % m_src_item.cx == 0);
         }
 

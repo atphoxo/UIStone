@@ -4,6 +4,11 @@
 class FCRegKey : public ATL::CRegKey
 {
 public:
+    operator bool() const
+    {
+        return m_hKey != NULL;
+    }
+
     static CString GetString(HKEY root, PCWSTR key, PCWSTR value)
     {
         CString   out;

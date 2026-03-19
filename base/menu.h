@@ -32,6 +32,15 @@ public:
         }
     }
 
+    bool LoadMenuWithTranslate(UINT menu_id)
+    {
+        if (!LoadMenu(menu_id))
+            return false;
+
+        Translate();
+        return true;
+    }
+
 private:
     // Returns true if txt contains the translated text, false if no translation
     virtual bool OnTranslateMenuItem(CMenu* sub_menu, UINT item_id, CString& txt) = 0;

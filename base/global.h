@@ -38,3 +38,4 @@ public:
 #include "icon.h"
 #include "dll_loader.h"
 #include "resource.h"
+#include "menu.h"

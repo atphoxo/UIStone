@@ -33,4 +33,16 @@ public:
 
         return v * g_current_dpi() / v_designed_for_dpi;
     }
+
+#ifdef _AFX
+    static int CastForWindow(int v, CWnd* wnd)
+    {
+        if (!wnd)
+        {
+            assert(false);
+            return v;
+        }
+        return v * ::GetDpiForWindow(*wnd) / USER_DEFAULT_SCREEN_DPI;
+    }
+#endif
 };

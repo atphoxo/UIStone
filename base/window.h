@@ -49,6 +49,18 @@ public:
             DDX_Text(pDX, nIDC, t);
         }
     }
+
+    static void AddComboString(CWnd* ctrl, const CString& text)
+    {
+        if (!ctrl)
+            return;
+
+        LanguageTextSplitter   parts(text);
+        for (CString t = parts.Next(); !t.IsEmpty(); t = parts.Next())
+        {
+            ((CComboBox*)ctrl)->AddString(t);
+        }
+    }
 #endif
 
     static void LimitWindowInScreen(CRect& rc)

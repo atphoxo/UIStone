@@ -25,6 +25,20 @@ public:
         return out;
     }
 
+    // N: maximum number of characters.
+    template <size_t N = MAX_PATH>
+    bool LoadString(PCWSTR name, CString& output)
+    {
+        WCHAR   buf[N] = {};
+        ULONG   len = N;
+        if (QueryStringValue(name, buf, &len) == ERROR_SUCCESS)
+        {
+            output = buf;
+            return true;
+        }
+        return false;
+    }
+
     // Load int from registry; n unchanged if not found
     void LoadInt(PCWSTR name, int& n)
     {

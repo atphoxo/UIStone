@@ -75,10 +75,10 @@ protected:
         bmp.Attach(CreateCompatibleBitmap(lpDIS->hDC, rc.Width(), rc.Height()));
         {
             phoxo::BitmapHDC   auto_bmp_selected(bmp);
-            auto   mem_dc = CDC::FromHandle(auto_bmp_selected);
-            SelectObject(*mem_dc, FontManager::GetDefaultFont());
-            OnDrawButton(*mem_dc, rc);
-            BitBlt(lpDIS->hDC, 0, 0, rc.Width(), rc.Height(), *mem_dc, 0, 0, SRCCOPY);
+            CDC&   mem_dc = *CDC::FromHandle(auto_bmp_selected);
+            mem_dc.SelectObject(FCFont::GetDefaultFont());
+            OnDrawButton(mem_dc, rc);
+            BitBlt(lpDIS->hDC, 0, 0, rc.Width(), rc.Height(), mem_dc, 0, 0, SRCCOPY);
         }
     }
 };

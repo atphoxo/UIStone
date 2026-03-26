@@ -25,7 +25,10 @@ public:
         return t.Size();
     }
 
-    static int GetScrollbarWidth() { return GetSystemMetrics(SM_CXVSCROLL); }
+    static int GetScrollbarWidth()
+    {
+        return GetSystemMetricsForDpi(SM_CXVSCROLL, DPICalculator::Current());
+    }
 
 #ifdef _AFX
     static CRect GetChildRectOnParent(const CWnd& parent, int child_ctrl_id)
@@ -62,16 +65,6 @@ public:
         }
     }
 #endif
-
-    static void LimitWindowInScreen(CRect& rc)
-    {
-        CRect   work_rect;
-        ::SystemParametersInfo(SPI_GETWORKAREA, sizeof(RECT), work_rect, 0);
-        CRect   tmp(rc.TopLeft(), work_rect.Size()); // Ensure rc stays within screen bounds
-        rc.IntersectRect(CRect(rc), tmp);
-
-        MoveRectInside(rc, work_rect.BottomRight());
-    }
 
     static void MoveRectInside(CRect& rc, CSize limit)
     {

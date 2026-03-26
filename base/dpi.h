@@ -3,24 +3,27 @@
 class DPICalculator
 {
 private:
-    static int AcquireDpi()
-    {
-        HDC   dc = ::GetDC(NULL);
-        int   dpi = GetDeviceCaps(dc, LOGPIXELSX);
-        ::ReleaseDC(NULL, dc);
-        return dpi;
-    }
+    static inline int   g_current_dpi = 0;
 
 public:
-    static int& g_current_dpi()
+    static void Update(HWND wnd)
     {
-        static int   s = AcquireDpi();
-        return s;
+        g_current_dpi = ::GetDpiForWindow(wnd);
+        assert(g_current_dpi);
+    }
+
+    static int Current()
+    {
+        if (g_current_dpi)
+            return g_current_dpi;
+
+        assert(false);
+        return ::GetDpiForSystem();
     }
 
     static float GetDPIScaleFactor()
     {
-        return g_current_dpi() / (float)USER_DEFAULT_SCREEN_DPI;
+        return Current() / (float)USER_DEFAULT_SCREEN_DPI;
     }
 
     static int Cast(int v, int v_designed_for_dpi = USER_DEFAULT_SCREEN_DPI)
@@ -31,18 +34,6 @@ public:
             return v;
         }
 
-        return v * g_current_dpi() / v_designed_for_dpi;
+        return v * Current() / v_designed_for_dpi;
     }
-
-#ifdef _AFX
-    static int CastForWindow(int v, CWnd* wnd)
-    {
-        if (!wnd)
-        {
-            assert(false);
-            return v;
-        }
-        return v * ::GetDpiForWindow(*wnd) / USER_DEFAULT_SCREEN_DPI;
-    }
-#endif
 };

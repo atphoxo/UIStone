@@ -12,7 +12,6 @@ private:
     CToolTipCtrl   m_tip_ctrl;
     std::unique_ptr<CWidgetLayout>   m_layout;
     std::deque<std::unique_ptr<CWidgetItem>>   m_child_widget;
-    CFont   m_font;
     internal::Scrollbar   m_scrollbar;
     CWidgetItem   * m_highlight = nullptr; // 拖拽消息循环中，可能被别的事件激活Reload，item已经被删除了
 
@@ -29,8 +28,6 @@ public:
         CWnd::Create(NULL, NULL, WS_CHILD | WS_TABSTOP | WS_CLIPCHILDREN | wnd_style, rect_on_parent, parent_wnd, nID);
     }
     void SetWidgetLayout(CWidgetLayout* widget_layout) { m_layout.reset(widget_layout); }
-    void SetFont(int point_size, PCWSTR facename) { m_font.CreatePointFont(point_size, facename); }
-    auto& GetFont() const { return m_font; }
 
     void AddWidget(CWidgetItem* item, int add_index = -1);
     int FindWidgetIndex(int id) const;
@@ -240,8 +237,8 @@ inline void CWidgetWindow::OnMsgPaint(CDC& paint_dc, CRect update_rect)
     if (bmp.CreateCompatibleBitmap(&paint_dc, update_rect.Width(), update_rect.Height()))
     {
         phoxo::BitmapHDC   auto_bmp_selected(bmp); // 析构自动选出
-        CDC   & mem_dc = *CDC::FromHandle(auto_bmp_selected);
-        SelectObject(mem_dc, m_font.m_hObject ? m_font.m_hObject : FontManager::GetDefaultFont());
+        CDC&   mem_dc = *CDC::FromHandle(auto_bmp_selected);
+        mem_dc.SelectObject(FCFont::GetDefaultFont());
 
         mem_dc.SetViewportOrg(-update_rect.TopLeft()); // 原点移到窗口左上角
         DrawWidgetWindowBack(mem_dc, update_rect);

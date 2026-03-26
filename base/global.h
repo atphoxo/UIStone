@@ -15,10 +15,10 @@ public:
 };
 //-------------------------------------------------------------------------------------
 // headers
+#include "dpi.h"
 #include "helper.h"
 #include "dc.h"
 #include "gdiplus.h"
-#include "dpi.h"
 #include "file.h"
 #include "regkey.h"
 #include "file_save_agent.h"

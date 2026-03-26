@@ -1,63 +1,50 @@
 #pragma once
 
 /// Font helper.
-class FontManager
+#ifdef _AFX
+class FCFont : public CFont
 {
-private:
-    class CAutoFont
-    {
-    public:
-        HFONT   m_font = NULL;
-        CAutoFont()
-        {
-            NONCLIENTMETRICS   nm = { sizeof(NONCLIENTMETRICS) };
-            SystemParametersInfo(SPI_GETNONCLIENTMETRICS, nm.cbSize, &nm, 0);
-#ifdef _AFX
-            CFont   tmp;
-            tmp.CreatePointFont(90, nm.lfMenuFont.lfFaceName);
-            m_font = (HFONT)tmp.Detach();
-#endif
-        }
-        ~CAutoFont()
-        {
-            ::DeleteObject(m_font);
-            m_font = NULL;
-        }
-    };
-
 public:
-    /// Get default UI font (font used by menu), <B>mustn't delete returned font</B>.
-    static HFONT GetDefaultFont()
+    /// Get default UI font (menu font). The returned font must not be destroyed.
+    static FCFont& GetDefaultFont()
     {
-        return GLOBAL_OBJ().m_font;
-    }
-
-    /// Get face name of default font.
-    static CString GetDefaultFontFaceName()
-    {
-        LOGFONT   lf = {};
-        ::GetObject(GetDefaultFont(), sizeof(lf), &lf);
-        return lf.lfFaceName;
-    }
-
-    static CSize MeasureStringSize(PCWSTR str, HFONT str_font)
-    {
-#ifdef _AFX
-        CDC   dc;
-        dc.CreateCompatibleDC(NULL);
-        auto   old_font = SelectObject(dc, str_font);
-        CSize   sz = dc.GetTextExtent(str);
-        SelectObject(dc, old_font);
-        return sz;
-#else
-        return CSize();
-#endif
-    }
-
-private:
-    static CAutoFont& GLOBAL_OBJ()
-    {
-        static CAutoFont   v;
+        static FCFont   v;
+        if (!v.m_hObject)
+        {
+            v.CreatePointFontWithDPI(9);
+        }
         return v;
     }
+
+    static CSize MeasureStringSize(PCWSTR str, HFONT font)
+    {
+        CDC   dc;
+        dc.CreateCompatibleDC(NULL);
+        auto   old_font = dc.SelectObject(font);
+        CSize   sz = dc.GetTextExtent(str);
+        dc.SelectObject(old_font);
+        return sz;
+    }
+
+    static PCWSTR DefaultUIFacename()
+    {
+        return L"Segoe UI";
+    }
+
+    BOOL CreatePointFontWithDPI(int pointsize, PCWSTR facename = DefaultUIFacename(), int dpi = DPICalculator::Current())
+    {
+        DeleteObject();
+
+        LOGFONT   lf = { .lfCharSet = DEFAULT_CHARSET };
+        Checked::tcsncpy_s(lf.lfFaceName, _countof(lf.lfFaceName), facename, _TRUNCATE);
+        lf.lfHeight = -MulDiv(pointsize, dpi, 72);
+        return CreateFontIndirect(&lf);
+    }
+
+    static void RebuildDefaultFont()
+    {
+        GetDefaultFont().DeleteObject();
+        GetDefaultFont(); // force rebuld font with new dpi
+    }
 };
+#endif

@@ -8,13 +8,13 @@ public:
 public:
     FCIcon() = default;
 
-    FCIcon(HICON ico) : p(ico)
+    explicit FCIcon(HICON ico) : p(ico)
     {
     }
 
-    FCIcon(int res_id, int output_size)
+    FCIcon(int res_id, int output_size, HINSTANCE hinst = (HINSTANCE)&__ImageBase)
     {
-        ::LoadIconWithScaleDown((HINSTANCE)&__ImageBase, MAKEINTRESOURCE(res_id), output_size, output_size, &p);
+        ::LoadIconWithScaleDown(hinst, MAKEINTRESOURCE(res_id), output_size, output_size, &p);
     }
 
     ~FCIcon()

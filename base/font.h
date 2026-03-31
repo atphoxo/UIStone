@@ -26,9 +26,11 @@ public:
         return sz;
     }
 
-    static PCWSTR DefaultUIFacename()
+    /// System UI font (menu font)
+    static const CString& DefaultUIFacename()
     {
-        return L"Segoe UI";
+        static CString   v = QuerySystemUIFont();
+        return v;
     }
 
     BOOL CreatePointFontWithDPI(int pointsize, PCWSTR facename = DefaultUIFacename(), int dpi = DPICalculator::Current())
@@ -44,7 +46,16 @@ public:
     static void RebuildDefaultFont()
     {
         GetDefaultFont().DeleteObject();
-        GetDefaultFont(); // force rebuld font with new dpi
+        GetDefaultFont(); // rebuild with new dpi
+    }
+
+private:
+    static CString QuerySystemUIFont()
+    {
+        NONCLIENTMETRICS   nm = { sizeof(nm) };
+        if (SystemParametersInfo(SPI_GETNONCLIENTMETRICS, nm.cbSize, &nm, 0))
+            return nm.lfMenuFont.lfFaceName;
+        return L"Segoe UI";
     }
 };
 #endif

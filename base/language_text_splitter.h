@@ -27,4 +27,13 @@ public:
             return L"";
         return m_text.Tokenize(tokens, m_pos);
     }
+
+    // Fill span, return true if all elements are not empty
+    bool Fill(std::span<CString> out, PCWSTR tokens = L"|")
+    {
+        return std::ranges::all_of(out, [this, tokens](CString& it) {
+            it = Next(tokens);
+            return !it.IsEmpty();
+        });
+    }
 };

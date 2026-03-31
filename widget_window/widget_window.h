@@ -77,7 +77,7 @@ private:
     template <typename T>
     void PaintAllWidgets(CDC& dc, const T& vec, const CRect& update_rect)
     {
-        for (CSize sbpos = m_scrollbar.GetPos(); auto& iter : vec)
+        for (CSize sbpos = m_scrollbar.GetPos(); const auto& iter : vec)
         {
             CRect   widget_rect = iter->GetRectOnCanvas() - sbpos; // convert to rect on window
             if (iter->IsVisible() && CRect().IntersectRect(widget_rect, update_rect))

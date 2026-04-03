@@ -9,12 +9,19 @@ private:
 
 public:
     /// Typical usage: mod = (HMODULE)&__ImageBase
-    FCResource(UINT nID, PCWSTR resource_type, HMODULE mod = NULL)
+    explicit FCResource(UINT nID, PCWSTR resource_type, HMODULE mod = NULL)
     {
         auto   hres = FindResource(mod, MAKEINTRESOURCE(nID), resource_type);
         m_ptr = LockResource(::LoadResource(mod, hres));
         m_size = SizeofResource(mod, hres);
         assert(m_ptr);
+    }
+
+    /// The resource does NOT take ownership of the memory;
+    /// the caller must ensure that the memory remains valid for the lifetime of this FCResource instance.
+    explicit FCResource(LPCVOID data_ref, size_t size) : m_ptr{ data_ref }, m_size{ (UINT)size }
+    {
+        assert(data_ref);
     }
 
     operator IStream*() const

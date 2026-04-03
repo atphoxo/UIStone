@@ -4,14 +4,27 @@
 class LanguageText
 {
 public:
-    static CString Get(PCWSTR section, PCWSTR key)
+    enum class TextStyle
     {
-        return GetIniReader().Get(section, key);
+        None,               // No processing, return text as-is
+        ReplaceNewline,     // Replace escaped newline (\n) with real newline
+    };
+
+    static CString Get(PCWSTR section, PCWSTR key, TextStyle style = TextStyle::None)
+    {
+        CString   s = GetIniReader().Get(section, key);
+        switch (style)
+        {
+            case TextStyle::ReplaceNewline:
+                s.Replace(LR"(\n)", L"\n");
+                break;
+        }
+        return s;
     }
 
-    static CString Get(PCWSTR section, int key)
+    static CString Get(PCWSTR section, int key, TextStyle style = TextStyle::None)
     {
-        return Get(section, FCString::From(key));
+        return Get(section, FCString::From(key), style);
     }
 
     // (en.ini,English) , (pt.ini,Portugu¨ºs)

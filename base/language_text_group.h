@@ -10,11 +10,13 @@ public:
     {
     }
 
-    LanguageTextGroup(PCWSTR section, PCWSTR key) : LanguageTextGroup{ LanguageText::Get(section, key) }
+    LanguageTextGroup(PCWSTR section, PCWSTR key, LanguageText::TextStyle style = LanguageText::TextStyle::None)
+        : LanguageTextGroup{ LanguageText::Get(section, key, style) }
     {
     }
 
-    LanguageTextGroup(PCWSTR section, int key) : LanguageTextGroup{ LanguageText::Get(section, key) }
+    LanguageTextGroup(PCWSTR section, int key, LanguageText::TextStyle style = LanguageText::TextStyle::None)
+        : LanguageTextGroup{ LanguageText::Get(section, key, style) }
     {
     }
 

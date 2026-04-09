@@ -60,7 +60,7 @@ public:
 private:
     int CallGetScrollPos(int bar, int event) const
     {
-        SCROLLINFO   si = {};
+        SCROLLINFO   si{};
         m_host.GetScrollInfo(bar, &si);
         return ((event == SB_THUMBPOSITION) || (event == SB_THUMBTRACK)) ? si.nTrackPos : si.nPos;
     }

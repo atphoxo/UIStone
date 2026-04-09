@@ -12,11 +12,13 @@ public:
         assert(!text.IsEmpty());
     }
 
-    LanguageTextSplitter(PCWSTR section, PCWSTR key) : LanguageTextSplitter(LanguageText::Get(section, key))
+    LanguageTextSplitter(PCWSTR section, PCWSTR key, LanguageText::TextStyle style = LanguageText::TextStyle::None)
+        : LanguageTextSplitter(LanguageText::Get(section, key, style))
     {
     }
 
-    LanguageTextSplitter(PCWSTR section, int key) : LanguageTextSplitter(LanguageText::Get(section, key))
+    LanguageTextSplitter(PCWSTR section, int key, LanguageText::TextStyle style = LanguageText::TextStyle::None)
+        : LanguageTextSplitter(LanguageText::Get(section, key, style))
     {
     }
 

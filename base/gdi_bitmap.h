@@ -59,10 +59,10 @@ public:
         return t;
     }
 
-    static bool IsDDB(HBITMAP bmp)
+    static bool Is32BitDIB(HBITMAP bmp)
     {
         DIBSECTION   info{};
         ::GetObject(bmp, sizeof(info), &info);
-        return info.dsBm.bmBits == nullptr;
+        return (info.dsBmih.biBitCount == 32) && info.dsBm.bmBits;
     }
 };

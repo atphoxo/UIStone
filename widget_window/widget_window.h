@@ -28,6 +28,7 @@ public:
         CWnd::Create(NULL, NULL, WS_CHILD | WS_TABSTOP | WS_CLIPCHILDREN | wnd_style, rect_on_parent, parent_wnd, nID);
     }
     void SetWidgetLayout(CWidgetLayout* widget_layout) { m_layout.reset(widget_layout); }
+    CWidgetLayout* GetWidgetLayout() const { return m_layout.get(); }
 
     void AddWidget(CWidgetItem* item, int add_index = -1);
     int FindWidgetIndex(int id) const;
@@ -39,8 +40,9 @@ public:
     CWidgetItem* ReleaseWidgetOwnership(int id);
     void LayoutWidget();
     CWidgetItem* ClickHitTest(CPoint pt_on_window, bool scan_hidden = false) const;
-    auto& GetAllWidgets() const { return m_child_widget; }
+    const auto& GetAllWidgets() const { return m_child_widget; }
 
+    const auto& GetScrollbar() const { return m_scrollbar; }
     CRect CanvasToWindow(const CRect& rect_on_canvas) const { return rect_on_canvas - m_scrollbar.GetPos(); }
 
 protected:

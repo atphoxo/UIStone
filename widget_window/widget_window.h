@@ -14,6 +14,7 @@ private:
     std::deque<std::unique_ptr<CWidgetItem>>   m_child_widget;
     internal::Scrollbar   m_scrollbar;
     CWidgetItem   * m_highlight = nullptr; // 拖拽消息循环中，可能被别的事件激活Reload，item已经被删除了
+    UINT   m_next_tool_id = 0;
 
 public:
     CWidgetWindow() : m_scrollbar(*this) {}
@@ -51,7 +52,6 @@ protected:
 
     void RegisterToolTip();
 
-    virtual void OnCreateTooltip(CToolTipCtrl& tip_ctrl);
     /// you can think of dc as window client dc.
     virtual void DrawWidgetWindowBack(CDC& dc, CRect update_on_dc) {}
     virtual bool OnHighlightBegin(CWidgetItem* highlight) { return false; }
@@ -91,6 +91,9 @@ private:
             }
         }
     }
+
+    void ClearToolTips();
+    void EnsureToolTip();
 };
 //-------------------------------------------------------------------------------------
 inline void CWidgetWindow::AddWidget(CWidgetItem* item_src, int add_index)
@@ -136,7 +139,7 @@ inline CWidgetItem* CWidgetWindow::GetWidgetByIndex(int index) const
 inline void CWidgetWindow::DeleteAllWidget()
 {
     m_child_widget.clear();
-    m_tip_ctrl.DestroyWindow();
+    ClearToolTips();
     m_highlight = nullptr;
 }
 
@@ -185,36 +188,6 @@ inline CWidgetItem* CWidgetWindow::ClickHitTest(CPoint pt_on_window, bool scan_h
         }
     }
     return nullptr;
-}
-
-inline void CWidgetWindow::RegisterToolTip()
-{
-    if (!m_hWnd) { ASSERT(false); return; }
-
-    CRect   wnd_rect = FCWnd::GetClientRect(*this);
-    CSize   sbpos = m_scrollbar.GetPos();
-
-    m_tip_ctrl.DestroyWindow();
-    int   tip_id = 100;
-    for (auto& iter : m_child_widget)
-    {
-        if (iter->IsVisible() && !iter->m_tip.IsEmpty())
-        {
-            CRect   rect_on_wnd = iter->GetRectOnCanvas() - sbpos;
-            if (CRect().IntersectRect(rect_on_wnd, wnd_rect))
-            {
-                if (!m_tip_ctrl)
-                    OnCreateTooltip(m_tip_ctrl);
-                iter->OnRegisterTip(m_tip_ctrl, this, tip_id++, rect_on_wnd);
-            }
-        }
-    }
-}
-
-inline void CWidgetWindow::OnCreateTooltip(CToolTipCtrl& tip_ctrl)
-{
-    m_tip_ctrl.Create(this, TTS_ALWAYSTIP);
-    m_tip_ctrl.Activate(TRUE);
 }
 
 inline void CWidgetWindow::OnHighlightEnd(CPoint pt_on_window)
@@ -389,3 +362,5 @@ inline LRESULT CWidgetWindow::WindowProc(UINT msg, WPARAM wParam, LPARAM lParam)
     }
     return __super::WindowProc(msg, wParam, lParam);
 }
+
+#include "widget_window_tooltip.inl"

@@ -28,8 +28,10 @@ public:
     {
         CWnd::Create(NULL, NULL, WS_CHILD | WS_TABSTOP | WS_CLIPCHILDREN | wnd_style, rect_on_parent, parent_wnd, nID);
     }
-    void SetWidgetLayout(CWidgetLayout* widget_layout) { m_layout.reset(widget_layout); }
+
+    void SetWidgetLayout(CWidgetLayout* layout) { m_layout.reset(layout); }
     CWidgetLayout* GetWidgetLayout() const { return m_layout.get(); }
+    void LayoutWidget();
 
     void AddWidget(CWidgetItem* item, int add_index = -1);
     int FindWidgetIndex(int id) const;
@@ -39,7 +41,6 @@ public:
     void DeleteWidgetByID(int id);
     void DeleteWidgetByIndex(int index);
     CWidgetItem* ReleaseWidgetOwnership(int id);
-    void LayoutWidget();
     CWidgetItem* ClickHitTest(CPoint pt_on_window, bool scan_hidden = false) const;
     const auto& GetAllWidgets() const { return m_child_widget; }
 
@@ -98,8 +99,9 @@ private:
 //-------------------------------------------------------------------------------------
 inline void CWidgetWindow::AddWidget(CWidgetItem* item_src, int add_index)
 {
+    if (!item_src) return;
+
     std::unique_ptr<CWidgetItem>   item(item_src);
-    if (!item) return;
     if (add_index == -1)
     {
         m_child_widget.push_back(std::move(item));

@@ -30,7 +30,8 @@ public:
         if (msg)
         {
             int   page = (GET_WHEEL_DELTA_WPARAM(wParam) > 0) ? SB_PAGEUP : SB_PAGEDOWN;
-            m_host.PostMessage(msg, MAKEWPARAM(page, 0));
+            m_host.SendMessage(msg, MAKEWPARAM(page, 0));
+
             CPoint   pt(lParam);
             m_host.ScreenToClient(&pt);
             m_host.PostMessage(WM_MOUSEMOVE, wParam, MAKELPARAM(pt.x, pt.y));
@@ -44,7 +45,7 @@ public:
         if (!m_page)
             m_page = ((bar == SB_VERT) ? first_item_size.cy : first_item_size.cx);
 
-        int   pos = CallGetScrollPos(bar, event);
+        int   pos = GetScrollPosFromEvent(bar, event);
         switch (event)
         {
             case SB_PAGEUP: pos -= m_page; break;
@@ -58,7 +59,7 @@ public:
     }
 
 private:
-    int CallGetScrollPos(int bar, int event) const
+    int GetScrollPosFromEvent(int bar, int event) const
     {
         SCROLLINFO   si{};
         m_host.GetScrollInfo(bar, &si);

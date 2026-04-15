@@ -26,9 +26,9 @@ public:
 
     int GetID() const { return m_id; }
     void SetTip(const CString& tip_text) { m_tip = tip_text; }
-    auto& GetTip() const { return m_tip; }
+    const CString& GetTip() const { return m_tip; }
     void SetRectOnCanvas(const CRect& rect_on_canvas) { m_rect_on_canvas = rect_on_canvas; }
-    auto& GetRectOnCanvas() const { return m_rect_on_canvas; }
+    const CRect& GetRectOnCanvas() const { return m_rect_on_canvas; }
     // the top left point is (0,0)
     CRect GetItemClientRect() const { return CRect({}, m_rect_on_canvas.Size()); }
     void ModifyStyle(int remove, int add) { m_style = ((m_style & ~remove) | add); }

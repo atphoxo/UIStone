@@ -42,16 +42,15 @@ public:
 
     void OnMsgScroll(int bar, int event, SIZE first_item_size)
     {
-        if (!m_page)
-            m_page = ((bar == SB_VERT) ? first_item_size.cy : first_item_size.cx);
-
+        int   ln = DPICalculator::Cast(m_line);
+        int   pg = m_page ? m_page : ((bar == SB_VERT) ? first_item_size.cy : first_item_size.cx);
         int   pos = GetScrollPosFromEvent(bar, event);
         switch (event)
         {
-            case SB_PAGEUP: pos -= m_page; break;
-            case SB_LINEUP: pos -= m_line; break;
-            case SB_PAGEDOWN: pos += m_page; break;
-            case SB_LINEDOWN: pos += m_line; break;
+            case SB_PAGEUP: pos -= pg; break;
+            case SB_LINEUP: pos -= ln; break;
+            case SB_PAGEDOWN: pos += pg; break;
+            case SB_LINEDOWN: pos += ln; break;
         }
 
         SCROLLINFO   si = { .fMask = SIF_POS, .nPos = pos };

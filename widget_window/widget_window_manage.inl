@@ -71,14 +71,14 @@ inline CWidgetItem* CWidgetWindow::ReleaseWidgetOwnership(int id)
     return nullptr;
 }
 
-inline CWidgetItem* CWidgetWindow::ClickHitTest(CPoint pt_on_window, bool scan_hidden) const
+inline CWidgetItem* CWidgetWindow::ClickHitTest(CPoint pt_on_window, bool include_hidden) const
 {
-    CPoint   pt = pt_on_window + m_scrollbar.GetPos();
-    for (auto& iter : m_child_widget)
+    CPoint   pt = pt_on_window + m_scrollbar.GetPos(); // -> canvas coordinate
+    for (const auto& iter : m_child_widget)
     {
         if (iter->GetRectOnCanvas().PtInRect(pt) && iter->IsEnable())
         {
-            if (scan_hidden || iter->IsVisible())
+            if (include_hidden || iter->IsVisible())
                 return iter.get();
         }
     }

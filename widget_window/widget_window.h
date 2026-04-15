@@ -41,7 +41,7 @@ public:
     void DeleteWidgetByID(int id);
     void DeleteWidgetByIndex(int index);
     CWidgetItem* ReleaseWidgetOwnership(int id);
-    CWidgetItem* ClickHitTest(CPoint pt_on_window, bool scan_hidden = false) const;
+    CWidgetItem* ClickHitTest(CPoint pt_on_window, bool include_hidden = false) const;
     const auto& GetAllWidgets() const { return m_child_widget; }
 
     const auto& GetScrollbar() const { return m_scrollbar; }
@@ -82,7 +82,7 @@ private:
     {
         for (CSize sbpos = m_scrollbar.GetPos(); const auto& iter : vec)
         {
-            CRect   widget_rect = iter->GetRectOnCanvas() - sbpos; // convert to rect on window
+            CRect   widget_rect = iter->GetRectOnCanvas() - sbpos; // to rect on window
             if (iter->IsVisible() && CRect().IntersectRect(widget_rect, update_rect))
             {
                 // for every item, the origin of DC is point (0,0)
@@ -108,7 +108,7 @@ inline void CWidgetWindow::LayoutWidget()
 
 inline void CWidgetWindow::OnHighlightEnd(CPoint pt_on_window)
 {
-    auto   now_item = ClickHitTest(pt_on_window);
+    auto*   now_item = ClickHitTest(pt_on_window);
     if (now_item && (now_item == m_highlight))
     {
         OnClickWidget(*now_item);

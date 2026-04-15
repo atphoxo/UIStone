@@ -73,6 +73,13 @@ public:
         rc.OffsetRect(dx, dy);
     }
 
+    static int WheelDeltaToStep(short zDelta)
+    {
+        if (int v = zDelta / WHEEL_DELTA)
+            return v;
+        return (zDelta >= 0) ? 1 : -1;
+    }
+
 private:
     static int OffsetInRange(int low, int high, int limit)
     {

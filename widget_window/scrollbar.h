@@ -26,7 +26,7 @@ public:
         UINT   msg = 0;
         DWORD   style = m_host.GetStyle();
         if (style & WS_HSCROLL) { msg = WM_HSCROLL; }
-        if (style & WS_VSCROLL) { msg = WM_VSCROLL; } // 同时存在会只滚动Vertical
+        if (style & WS_VSCROLL) { msg = WM_VSCROLL; } // if both exist, vertical scroll is prioritized
         if (msg)
         {
             int   page = (GET_WHEEL_DELTA_WPARAM(wParam) > 0) ? SB_PAGEUP : SB_PAGEDOWN;

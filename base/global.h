@@ -39,3 +39,4 @@ public:
 #include "dll_loader.h"
 #include "resource.h"
 #include "menu.h"
+#include "file_mapping.h"

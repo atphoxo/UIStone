@@ -36,4 +36,9 @@ public:
 
         return v * Current() / v_designed_for_dpi;
     }
+
+    static CSize Cast(SIZE sz)
+    {
+        return CSize{ Cast(sz.cx), Cast(sz.cy) };
+    }
 };

@@ -27,4 +27,10 @@ struct FCFileMapping
         if (m_mapping) { CloseHandle(m_mapping); }
         if (m_file != INVALID_HANDLE_VALUE) { CloseHandle(m_file); }
     }
+
+    // Empty file is treated as failure
+    explicit operator bool() const
+    {
+        return m_data && m_size.QuadPart;
+    }
 };

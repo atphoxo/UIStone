@@ -44,6 +44,9 @@ public:
     IWICBitmapPtr LoadSvgWithDpi() const
     {
         CSize   original = SVGSizeFastHack();
+        if (!original.cx || !original.cy)
+            return nullptr;
+
         float   scale = DPICalculator::GetDPIScaleFactor();
         CSize   target_size(std::lround(original.cx * scale), std::lround(original.cy * scale));
         return LoadSVG(target_size, scale);

@@ -5,7 +5,6 @@ class FCResource
 private:
     const void*   m_ptr;
     UINT   m_size;
-    mutable IStreamPtr   m_stream;
 
 public:
     /// Typical usage: mod = (HMODULE)&__ImageBase
@@ -24,13 +23,14 @@ public:
         assert(data_ref);
     }
 
-    operator IStream*() const
+    explicit operator bool() const
     {
-        if (!m_stream)
-        {
-            m_stream = phoxo::Utils::CreateMemStream(m_ptr, m_size);
-        }
-        return m_stream;
+        return m_ptr && m_size;
+    }
+
+    IStreamPtr CreateStream() const
+    {
+        return (m_ptr && m_size) ? phoxo::Utils::CreateMemStream(m_ptr, m_size) : nullptr;
     }
 
     /// Render the SVG resource into a premultiplied-alpha WIC bitmap
@@ -67,10 +67,15 @@ private:
     // width/height attributes must exist and are integer values
     SIZE SVGSizeFastHack() const
     {
-        // Create a null-terminated CStringA from the resource memory
-        CStringA   xml((const char*)m_ptr, m_size);
-        int   x = ParseIntAttr(xml, R"( width=")"); assert(x);
-        int   y = ParseIntAttr(xml, R"( height=")"); assert(y);
-        return { x,y };
+        SIZE   sz{};
+        if (m_ptr && m_size)
+        {
+            // Create a null-terminated CStringA from the resource memory
+            CStringA   xml((const char*)m_ptr, m_size);
+            sz.cx = ParseIntAttr(xml, R"( width=")");
+            sz.cy = ParseIntAttr(xml, R"( height=")");
+        }
+        assert(sz.cx && sz.cy);
+        return sz;
     }
 };

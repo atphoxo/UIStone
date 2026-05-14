@@ -16,11 +16,12 @@ public:
         return vec;
     }
 
-    static int FindNoCase(const std::deque<CString>& vec, const CString& search_str)
+    template<class Container>
+    static int FindNoCase(const Container& vec, const CString& target)
     {
-        for (int idx = 0; auto& iter : vec)
+        for (int idx = 0; const auto& it : vec)
         {
-            if (_wcsicmp(iter, search_str) == 0)
+            if (_wcsicmp(it, target) == 0)
                 return idx;
             idx++;
         }

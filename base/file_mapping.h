@@ -7,7 +7,7 @@ struct FCFileMapping
     LPCVOID   m_data{};
     LARGE_INTEGER   m_size{};
 
-    FCFileMapping(PCWSTR path)
+    explicit FCFileMapping(PCWSTR path)
     {
         m_file = CreateFile(path, GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_EXISTING, 0, NULL);
         if (m_file == INVALID_HANDLE_VALUE)
